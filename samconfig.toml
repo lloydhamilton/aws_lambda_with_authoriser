@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "lambdaJWT"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1xth0wbvvij8a"
+s3_prefix = "lambdaJWT"
+region = "eu-west-2"
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+parameter_overrides = "Stage=\"dev\""
+image_repositories = ["PredictFunction=870519320082.dkr.ecr.eu-west-2.amazonaws.com/lambdajwtd28d6d4a/predictfunction975a0b7frepo"]

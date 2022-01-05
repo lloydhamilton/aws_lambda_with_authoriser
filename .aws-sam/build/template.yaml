@@ -1,0 +1,75 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    Timeout: 50
+    MemorySize: 5000
+  Api:
+    OpenApiVersion: 3.0.1
+Parameters:
+  Stage:
+    Type: String
+    Default: dev
+Resources:
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName:
+        Ref: Stage
+      Auth:
+        DefaultAuthorizer: MyLambdaAuthorizer
+        Authorizers:
+          MyLambdaAuthorizer:
+            FunctionArn:
+              Fn::GetAtt:
+              - MyAuthFunctions
+              - Arn
+            FunctionPayloadType: TOKEN
+            Identity:
+              Headers:
+              - authorizationToken
+              ReauthorizeEvery: 100
+  PredictFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      Architectures:
+      - x86_64
+      Events:
+        Predict:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /predict
+            Method: POST
+      Policies:
+      - AmazonS3FullAccess
+      ImageUri: predictfunction:python3.9-v1
+    Metadata:
+      Dockerfile: Dockerfile
+      DockerContext: ./
+      DockerTag: python3.9-v1
+  MyAuthFunctions:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: MyAuthFunctions
+      Handler: handler.authorize
+      Runtime: python3.9
+Outputs:
+  InferenceApi:
+    Description: API Gateway endpoint URL for Dev stage for Predict Lambda function
+    Value:
+      Fn::Sub: https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/predict
+  InferenceFunction:
+    Description: Inference Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - PredictFunction
+      - Arn
+  InferenceFunctionIamRole:
+    Description: Implicit IAM Role created for Inference function
+    Value:
+      Fn::GetAtt:
+      - PredictFunction
+      - Arn

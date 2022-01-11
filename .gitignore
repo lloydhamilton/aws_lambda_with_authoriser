@@ -3,3 +3,4 @@
 env.json
 *.pptx
 samconfig.toml
+__pycache__/

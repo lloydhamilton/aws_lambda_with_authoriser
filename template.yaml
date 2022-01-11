@@ -17,17 +17,17 @@ Resources:
     Properties:
       StageName: !Ref Stage
       Auth:
-        DefaultAuthorizer: MyLambdaAuthorizer
-        Authorizers:
-          MyLambdaAuthorizer:
-            FunctionArn: !GetAtt MyAuthFunctions.Arn
-            FunctionPayloadType: TOKEN
-            Identity:
-              # Must specify at least one of
-              # Headers, QueryStrings, StageVariables, or Context
-              Headers:
-                - authorizationToken
-              ReauthorizeEvery: 100
+        DefaultAuthorizer: AWS_IAM
+        # Authorizers:
+        #   MyLambdaAuthorizer:
+        #     FunctionArn: !GetAtt MyAuthFunctions.Arn
+        #     FunctionPayloadType: TOKEN
+        #     Identity:
+        #       # Must specify at least one of
+        #       # Headers, QueryStrings, StageVariables, or Context
+        #       Headers:
+        #         - authorizationToken
+        #       ReauthorizeEvery: 100
   # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
   PredictFunction:
     Type: AWS::Serverless::Function
@@ -48,12 +48,12 @@ Resources:
       Dockerfile: Dockerfile
       DockerContext: ./
       DockerTag: python3.9-v1
-  MyAuthFunctions:
-    Type: "AWS::Serverless::Function"
-    Properties:
-      CodeUri: ./authorizer
-      Handler: handler.authorize
-      Runtime: python3.9
+  # MyAuthFunctions:
+  #   Type: "AWS::Serverless::Function"
+  #   Properties:
+  #     CodeUri: ./authorizer
+  #     Handler: handler.authorize
+  #     Runtime: python3.9
 Outputs:
   InferenceApi:
     Description: "API Gateway endpoint URL for Dev stage for Predict Lambda function"

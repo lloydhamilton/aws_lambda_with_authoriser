@@ -17,18 +17,7 @@ Resources:
       StageName:
         Ref: Stage
       Auth:
-        DefaultAuthorizer: MyLambdaAuthorizer
-        Authorizers:
-          MyLambdaAuthorizer:
-            FunctionArn:
-              Fn::GetAtt:
-              - MyAuthFunctions
-              - Arn
-            FunctionPayloadType: TOKEN
-            Identity:
-              Headers:
-              - authorizationToken
-              ReauthorizeEvery: 100
+        DefaultAuthorizer: AWS_IAM
   PredictFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -50,12 +39,6 @@ Resources:
       Dockerfile: Dockerfile
       DockerContext: ./
       DockerTag: python3.9-v1
-  MyAuthFunctions:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: MyAuthFunctions
-      Handler: handler.authorize
-      Runtime: python3.9
 Outputs:
   InferenceApi:
     Description: API Gateway endpoint URL for Dev stage for Predict Lambda function

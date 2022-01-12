@@ -78,6 +78,9 @@ canonical_uri = '/'
 
 ## Step 3: Create the canonical query string. In this example, request
 # parameters are passed in the body of the request and the query string
+canonical_querystring = ''
+
+# Step 4: Create the canonical headers. Header names must be trimmed
 # and lowercase, and sorted in code point order from low to high.
 # Note that there is a trailing \n.
 canonical_headers = 'content-type:' + content_type + '\n' + 'host:' + host + '\n' + 'x-amz-date:' + amz_date + '\n' + 'x-amz-target:' + amz_target + '\n'

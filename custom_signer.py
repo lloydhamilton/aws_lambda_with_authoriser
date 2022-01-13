@@ -6,11 +6,6 @@ import json
 import sys, os, base64, datetime, hashlib, hmac
 import requests
 
-# Values
-
-
-
-
 # AWS session keys
 session = boto3.Session()
 credentials = session.get_credentials()
@@ -31,7 +26,6 @@ def getSignatureKey(key, date_stamp, regionName, serviceName):
 # Create a date for headers and the credential string
 t = datetime.datetime.utcnow()
 amz_date = t.strftime('%Y%m%dT%H%M%SZ')
-
 
 # ************* TASK 1: CREATE A CANONICAL REQUEST *************
 
@@ -126,47 +120,10 @@ data = {
     'key':key,
 }
 
-r = requests.post(endpoint, data=json.dumps(data), headers=headers)
+r = requests.post(endpoint, json=data, headers=headers)
 
 print('\nRESPONSE++++++++++++++++++++++++++++++++++++')
 print('Response code: %d\n' % r.status_code)
 print(r.text)
 print(headers)
-
-# True
-# AWS4-HMAC-SHA256\n20220112T154938Z\n20220112/eu-west-2/execute-api/aws4_request\n37de6c3295a4fe50892cea12affeb533892c7421300fd9aae7ef36576fa03d66
-# AWS4-HMAC-SHA256\n20220112T155153Z\n20220112/eu-west-2/execute-api/aws4_request\n8a63f33abed15b7ad901942f406a51090ff363e94c819a07cb421349fbe59a13
-# 
-# True
-# POST\n/dev/predict\n\nhost:k1o73e73t4.execute-api.eu-west-2.amazonaws.com\nx-amz-date:20220112T154938Z\n\nhost;x-amz-date\neb37431a780e8448290c3a2ec8daddf4098a7baee1c729061d72cc0153011406
-# POST\n/dev/predict\n\nhost:k1o73e73t4.execute-api.eu-west-2.amazonaws.com\nx-amz-date:20220112T155153Z\n\nhost;x-amz-date\n46db666bb74fa53b4a0b4ac65e353444c595e0c8e821f90763c62d309a8ab0a1
-
-# POST\n
-# /dev/predict\n
-# \n
-# host:k1o73e73t4.execute-api.eu-west-2.amazonaws.com\n
-# x-amz-date:20220112T154458Z\n
-# \n
-# host;x-amz-date\n
-# 46db666bb74fa53b4a0b4ac65e353444c595e0c8e821f90763c62d309a8ab0a1
-
-# AWS4-HMAC-SHA256\n
-# 20220112T154458Z\n
-# 20220112/eu-west-2/execute-api/aws4_request\n
-# c77ddf3757d4d08dd369767d7d194c494dbc141155a7207914053c94831d3e62'\n
-
-# session = boto3.Session()
-# credentials = session.get_credentials()
-
-# auth = AWSRequestsAuth(aws_access_key=credentials.access_key,
-#                        aws_secret_access_key=credentials.secret_key,
-#                        aws_token=credentials.token,
-#                        aws_host='k1o73e73t4.execute-api.eu-west-2.amazonaws.com',
-#                        aws_region='eu-west-2',
-#                        aws_service='execute-api')
-
-# # canonical_uri = '/dev/predict'
-# response = requests.post('https://k1o73e73t4.execute-api.eu-west-2.amazonaws.com/dev/predict',json=data, auth=auth)
-
-# print(np.array(response.json()))
 

@@ -4,7 +4,6 @@ import numpy as np
 from aws_requests_auth.aws_auth import AWSRequestsAuth
 import json
 import sys, os, base64, datetime, hashlib, hmac
-import requests
 
 # AWS session keys
 session = boto3.Session()

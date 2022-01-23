@@ -1,9 +1,17 @@
-from urllib import parse
-import boto3
 import requests
 import json
 from urllib.parse import urlparse
 import datetime, hashlib, hmac
+from logger import logger
+#  import logging
+
+# logger = logging.getLogger()
+# handler = logging.StreamHandler()
+# fmt = '%(levelname)s %(asctime)s %(filename)s %(funcName)s %(lineno)d %(message)s'
+# formatter = logging.Formatter(fmt)
+# handler.setFormatter(formatter)
+# logger.addHandler(handler)
+# logger.setLevel(logging.INFO)
 
 # Code adapted from https://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
 
@@ -101,10 +109,9 @@ def sign_v4(method:str, endpoint:str, access_key:str, secret_key:str, data:dict,
 
     # ************* SEND THE REQUEST *************
     print('\nBEGIN REQUEST++++++++++++++++++++++++++++++++++++')
-    print('Request URL = ' + endpoint)
+    logger.info('Request sURL = ' + endpoint)
 
     r = requests.post(endpoint, json=data, headers=headers)
 
     print('\nRESPONSE++++++++++++++++++++++++++++++++++++')
     print('Response code: %d\n' % r.status_code)
-    print(r.text)

@@ -39,6 +39,7 @@ Resources:
        GenerateSecret: false
        ExplicitAuthFlows:
        - ALLOW_USER_PASSWORD_AUTH
+       - ALLOW_REFRESH_TOKEN_AUTH
   UserPoolUser:
      Type: AWS::Cognito::UserPoolUser
      Properties:
@@ -52,8 +53,13 @@ Resources:
       StageName: !Ref Stage
       Auth:
         Authorizers:
-          CognitoAuthorizer:
-            UserPoolArn: !GetAtt UserPool.Arn
+          MyCognitoAuth:
+            UserPoolArn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            AuthType: "COGNITO_USER_POOLS"
+        DefaultAuthorizer: MyCognitoAuth
   # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
   PredictFunction:
     Type: AWS::Serverless::Function

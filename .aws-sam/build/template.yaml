@@ -10,14 +10,59 @@ Parameters:
   Stage:
     Type: String
     Default: dev
+  YourEmail:
+    Type: String
+    Default: lloyd.lm.hamilton@gmail.com
 Resources:
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+      UserPoolName: TestingUsers
+      UsernameAttributes:
+      - email
+      AutoVerifiedAttributes:
+      - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 6
+          RequireLowercase: true
+          RequireNumbers: false
+          RequireSymbols: false
+          RequireUppercase: true
+  UserPoolTokenClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId:
+        Ref: UserPool
+      GenerateSecret: false
+      ExplicitAuthFlows:
+      - ALLOW_USER_PASSWORD_AUTH
+      - ALLOW_REFRESH_TOKEN_AUTH
+  UserPoolUser:
+    Type: AWS::Cognito::UserPoolUser
+    Properties:
+      DesiredDeliveryMediums:
+      - EMAIL
+      Username:
+        Ref: YourEmail
+      UserPoolId:
+        Ref: UserPool
   MyApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName:
         Ref: Stage
       Auth:
-        DefaultAuthorizer: AWS_IAM
+        Authorizers:
+          MyCognitoAuth:
+            UserPoolArn:
+              Fn::GetAtt:
+              - UserPool
+              - Arn
+            AuthType: COGNITO_USER_POOLS
+        DefaultAuthorizer: MyCognitoAuth
   PredictFunction:
     Type: AWS::Serverless::Function
     Properties:

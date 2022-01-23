@@ -3,15 +3,6 @@ import json
 from urllib.parse import urlparse
 import datetime, hashlib, hmac
 from logger import logger
-#  import logging
-
-# logger = logging.getLogger()
-# handler = logging.StreamHandler()
-# fmt = '%(levelname)s %(asctime)s %(filename)s %(funcName)s %(lineno)d %(message)s'
-# formatter = logging.Formatter(fmt)
-# handler.setFormatter(formatter)
-# logger.addHandler(handler)
-# logger.setLevel(logging.INFO)
 
 # Code adapted from https://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
 
@@ -108,6 +99,7 @@ def sign_v4(method:str, endpoint:str, access_key:str, secret_key:str, data:dict,
     }
 
     # ************* SEND THE REQUEST *************
-    logger.info(f'\nBeginning request to {endpoint}')
+    logger.info(f'\nBeginning {method} request to {endpoint}')
     r = requests.request(method=method, url=endpoint, json=data, headers=headers)
     logger.info('Response code: %d' % r.status_code)
+    return r

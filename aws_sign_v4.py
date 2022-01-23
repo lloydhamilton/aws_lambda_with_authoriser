@@ -108,10 +108,6 @@ def sign_v4(method:str, endpoint:str, access_key:str, secret_key:str, data:dict,
     }
 
     # ************* SEND THE REQUEST *************
-    print('\nBEGIN REQUEST++++++++++++++++++++++++++++++++++++')
-    logger.info('Request sURL = ' + endpoint)
-
-    r = requests.post(endpoint, json=data, headers=headers)
-
-    print('\nRESPONSE++++++++++++++++++++++++++++++++++++')
-    print('Response code: %d\n' % r.status_code)
+    logger.info(f'\nBeginning request to {endpoint}')
+    r = requests.request(method=method, url=endpoint, json=data, headers=headers)
+    logger.info('Response code: %d' % r.status_code)

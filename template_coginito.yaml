@@ -10,24 +10,50 @@ Parameters:
   Stage:
     Type: String
     Default: dev
+  YourEmail:
+    Type: String
+    Default: lloyd.lm.hamilton@gmail.com
 Resources:
   # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+  UserPool:
+     Type: AWS::Cognito::UserPool #https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpool.html
+     Properties:
+         AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: false
+         UserPoolName: TestingUsers
+         UsernameAttributes:
+         - email
+         AutoVerifiedAttributes:
+         - email
+         Policies:
+          PasswordPolicy:
+              MinimumLength: 6
+              RequireLowercase: true
+              RequireNumbers: false
+              RequireSymbols: false
+              RequireUppercase: true
+  UserPoolTokenClient:
+     Type: AWS::Cognito::UserPoolClient
+     Properties:
+       UserPoolId: !Ref UserPool
+       GenerateSecret: false
+       ExplicitAuthFlows:
+       - ALLOW_USER_PASSWORD_AUTH
+  UserPoolUser:
+     Type: AWS::Cognito::UserPoolUser
+     Properties:
+       DesiredDeliveryMediums:
+         - EMAIL
+       Username: !Ref YourEmail
+       UserPoolId: !Ref UserPool
   MyApi:
     Type: "AWS::Serverless::Api"
     Properties:
       StageName: !Ref Stage
       Auth:
-        DefaultAuthorizer: AWS_IAM
-        # Authorizers:
-        #   MyLambdaAuthorizer:
-        #     FunctionArn: !GetAtt MyAuthFunctions.Arn
-        #     FunctionPayloadType: TOKEN
-        #     Identity:
-        #       # Must specify at least one of
-        #       # Headers, QueryStrings, StageVariables, or Context
-        #       Headers:
-        #         - authorizationToken
-        #       ReauthorizeEvery: 100
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !GetAtt UserPool.Arn
   # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
   PredictFunction:
     Type: AWS::Serverless::Function

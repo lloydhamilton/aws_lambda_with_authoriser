@@ -2,7 +2,7 @@ import requests
 import json
 from urllib.parse import urlparse
 import datetime, hashlib, hmac
-from logger import log_events
+from src.logger import log_events
 
 logger = log_events()
 

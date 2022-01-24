@@ -18,7 +18,7 @@ Resources:
     Type: AWS::Cognito::UserPool
     Properties:
       AdminCreateUserConfig:
-        AllowAdminCreateUserOnly: false
+        AllowAdminCreateUserOnly: true
       UserPoolName: TestingUsers
       UsernameAttributes:
       - email
@@ -95,7 +95,7 @@ Outputs:
       Fn::GetAtt:
       - PredictFunction
       - Arn
-  InferenceFunctionIamRole:
-    Description: Implicit IAM Role created for Inference function
+  UserPoolTokenClient:
+    Description: UserPoolClient Id
     Value:
       Ref: UserPoolTokenClient

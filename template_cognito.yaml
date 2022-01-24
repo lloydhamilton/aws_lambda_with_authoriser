@@ -19,7 +19,7 @@ Resources:
      Type: AWS::Cognito::UserPool #https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpool.html
      Properties:
          AdminCreateUserConfig:
-          AllowAdminCreateUserOnly: false
+          AllowAdminCreateUserOnly: true
          UserPoolName: TestingUsers
          UsernameAttributes:
          - email
@@ -80,12 +80,6 @@ Resources:
       Dockerfile: Dockerfile
       DockerContext: ./
       DockerTag: python3.9-v1
-  # MyAuthFunctions:
-  #   Type: "AWS::Serverless::Function"
-  #   Properties:
-  #     CodeUri: ./authorizer
-  #     Handler: handler.authorize
-  #     Runtime: python3.9
 Outputs:
   InferenceApi:
     Description: "API Gateway endpoint URL for Dev stage for Predict Lambda function"

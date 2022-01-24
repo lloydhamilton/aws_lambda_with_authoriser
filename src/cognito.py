@@ -7,7 +7,7 @@ class Cognito:
     """Functions to authenticate with Cognito User client
 
     Parameters:
-    username: str, username string of login details 
+    username: str, username string of login details
     password: str, password string of login details
     """
     def __init__(self, username:str, password:str):

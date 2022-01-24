@@ -4,3 +4,4 @@ env.json
 *.pptx
 samconfig.toml
 __pycache__/
+creds.json

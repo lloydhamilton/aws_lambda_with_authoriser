@@ -1,5 +1,8 @@
 import boto3
-import logger
+# Def logging class
+from src.logger import log_events
+
+logger = log_events()
 
 def cognito_login(client_id:str, username:str, password:str):
     client = boto3.client('cognito-idp')
@@ -24,7 +27,7 @@ def auth_challenge(client_id:str, username:str, current_pw:str, new_password:str
     resp = cognito_login(client_id, username, current_pw)
     client = boto3.client('cognito-idp')
     challenge_resp = client.respond_to_auth_challenge(
-        ClientId=client_id
+        ClientId=client_id,
         ChallengeName='NEW_PASSWORD_REQUIRED',
         ChallengeResponses={
             'NEW_PASSWORD' : new_password,

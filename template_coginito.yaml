@@ -93,7 +93,7 @@ Outputs:
   InferenceFunction:
     Description: "Inference Lambda Function ARN"
     Value: !GetAtt PredictFunction.Arn
-  InferenceFunctionIamRole:
-    Description: "Implicit IAM Role created for Inference function"
-    Value: !GetAtt PredictFunction.Arn
+  UserPoolTokenClient:
+    Description: "UserPoolClient Id"
+    Value: !Ref UserPoolTokenClient
 

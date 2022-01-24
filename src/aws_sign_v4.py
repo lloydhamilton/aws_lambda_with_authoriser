@@ -2,7 +2,9 @@ import requests
 import json
 from urllib.parse import urlparse
 import datetime, hashlib, hmac
-from logger import logger
+from logger import log_events
+
+logger = log_events()
 
 # Code adapted from https://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
 

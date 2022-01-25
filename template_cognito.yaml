@@ -29,8 +29,8 @@ Resources:
           PasswordPolicy:
               MinimumLength: 6
               RequireLowercase: true
-              RequireNumbers: false
-              RequireSymbols: false
+              RequireNumbers: true
+              RequireSymbols: true
               RequireUppercase: true
   UserPoolTokenClient:
      Type: AWS::Cognito::UserPoolClient

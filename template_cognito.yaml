@@ -84,10 +84,10 @@ Outputs:
   InferenceApi:
     Description: "API Gateway endpoint URL for Dev stage for Predict Lambda function"
     Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/predict"
-  InferenceFunction:
-    Description: "Inference Lambda Function ARN"
-    Value: !GetAtt PredictFunction.Arn
+  UserPoolId:
+    Description: "UserPool ID"
+    Value: !Ref UserPool
   UserPoolTokenClient:
-    Description: "UserPoolClient Id"
+    Description: "UserPoolClient ID"
     Value: !Ref UserPoolTokenClient
 

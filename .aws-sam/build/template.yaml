@@ -28,8 +28,8 @@ Resources:
         PasswordPolicy:
           MinimumLength: 6
           RequireLowercase: true
-          RequireNumbers: false
-          RequireSymbols: false
+          RequireNumbers: true
+          RequireSymbols: true
           RequireUppercase: true
   UserPoolTokenClient:
     Type: AWS::Cognito::UserPoolClient
@@ -90,12 +90,10 @@ Outputs:
     Value:
       Fn::Sub: https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/predict
   InferenceFunction:
-    Description: Inference Lambda Function ARN
+    Description: UserPool ID
     Value:
-      Fn::GetAtt:
-      - PredictFunction
-      - Arn
+      Ref: UserPool
   UserPoolTokenClient:
-    Description: UserPoolClient Id
+    Description: UserPoolClient ID
     Value:
       Ref: UserPoolTokenClient

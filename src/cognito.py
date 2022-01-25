@@ -7,7 +7,7 @@ class Cognito:
     """Functions to manage Cognito user pool
 
     Args:
-        username (str): username string of login details or intended login details
+        username (str): username string of login detail or intended login detail
 
     """
     def __init__(self, username:str):
@@ -88,3 +88,4 @@ class Cognito:
         logger.info('Password Changed')
         return challenge_resp
 
+# test for exceptions

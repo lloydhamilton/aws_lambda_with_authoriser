@@ -11,6 +11,8 @@ class Cognito:
 
     """
     def __init__(self, username:str):
+        if not isinstance(username, str):
+            raise ValueError(f'Username must be of type str, got:{type(username)}')
         self.username = username
         self.client = boto3.client('cognito-idp')
 

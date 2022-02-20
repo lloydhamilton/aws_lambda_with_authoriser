@@ -12,6 +12,12 @@ Parameters:
     Default: dev
 Resources:
   # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+  MyAuthFunctions:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      CodeUri: ./authorizer
+      Handler: handler.authorize
+      Runtime: python3.9
   MyApi:
     Type: "AWS::Serverless::Api"
     Properties:
@@ -19,7 +25,7 @@ Resources:
       Auth:
         DefaultAuthorizer: MyAuthFunctions
         Authorizers:
-          MyLambdaAuthorizer:
+          MyAuthFunctions:
             FunctionArn: !GetAtt MyAuthFunctions.Arn
             FunctionPayloadType: TOKEN
             Identity:
@@ -48,12 +54,6 @@ Resources:
       Dockerfile: Dockerfile
       DockerContext: ./
       DockerTag: python3.9-v1
-  MyAuthFunctions:
-    Type: "AWS::Serverless::Function"
-    Properties:
-      CodeUri: ./authorizer
-      Handler: handler.authorize
-      Runtime: python3.9
 Outputs:
   InferenceApi:
     Description: "API Gateway endpoint URL for Dev stage for Predict Lambda function"
@@ -64,4 +64,3 @@ Outputs:
   InferenceFunctionIamRole:
     Description: "Implicit IAM Role created for Inference function"
     Value: !GetAtt PredictFunction.Arn
-

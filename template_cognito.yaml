@@ -20,7 +20,7 @@ Resources:
      Properties:
          AdminCreateUserConfig:
           AllowAdminCreateUserOnly: true
-         UserPoolName: TestingUsers
+         UserPoolName: lambdausers
          UsernameAttributes:
          - email
          AutoVerifiedAttributes:

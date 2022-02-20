@@ -1,8 +1,6 @@
 import boto3
 from src.logger import log_events
 
-logger = log_events()
-
 class Cognito:
     """Functions to manage Cognito user pool
 
@@ -15,6 +13,7 @@ class Cognito:
             raise ValueError(f'Username must be of type str, got:{type(username)}')
         self.username = username
         self.client = boto3.client('cognito-idp')
+        self.logger = log_events()
 
     def create_user(self, userpoolid:str) -> dict:
         """Create user using an email as username. create_user will require admin permissions.
@@ -41,7 +40,7 @@ class Cognito:
                 "PASSWORD": password
             }
         )
-        logger.info('Log in Successful')
+        self.logger.info('Log in Successful')
         return response
 
     def get_token(self, client_id:str, password:str):

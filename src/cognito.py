@@ -86,7 +86,7 @@ class Cognito:
             },
             Session=resp['Session']
         )
-        logger.info('Password Changed')
+        self.logger.info('Password Changed')
         return challenge_resp
 
 # test for exceptions
